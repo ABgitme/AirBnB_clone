@@ -2,6 +2,7 @@ import unittest
 import uuid
 from datetime import datetime
 from models.base_model import BaseModel
+import os
 
 class TestBaseModel(unittest.TestCase):
     #Basemodel test cases
@@ -59,6 +60,51 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(len(instance.id), 36)  # UUID length
         self.assertIsInstance(instance.created_at, datetime)
         self.assertNotEqual(instance.updated_at, instance.created_at)
+
+class TestFileStorage(unittest.TestCase):
+    """Unittests for testing save method of the BaseModel class."""
+
+    @classmethod
+    def setUpClass(cls):
+        # Rename file.json to tmp if it exists
+        if os.path.exists("file.json"):
+            os.rename("file.json", "tmp")
+
+    @classmethod
+    def tearDownClass(cls):
+        # Remove file.json if it exists
+        if os.path.exists("file.json"):
+            os.remove("file.json")
+
+        # Rename tmp to file.json if tmp exists
+        if os.path.exists("tmp"):
+            os.rename("tmp", "file.json")
+
+    def setUp(self):
+        self.bm = BaseModel()
+
+    def test_one_save(self):
+        first_updated_at = self.bm.updated_at
+        self.bm.save()
+        self.assertLess(first_updated_at, self.bm.updated_at)
+
+    def test_two_saves(self):
+        first_updated_at = self.bm.updated_at
+        self.bm.save()
+        second_updated_at = self.bm.updated_at
+        self.assertLess(first_updated_at, second_updated_at)
+        self.bm.save()
+        self.assertLess(second_updated_at, self.bm.updated_at)
+
+    def test_save_with_arg(self):
+        with self.assertRaises(TypeError):
+            self.bm.save(None)
+
+    def test_save_updates_file(self):
+        self.bm.save()
+        bmid = "BaseModel." + self.bm.id
+        with open("file.json", "r") as f:
+            self.assertIn(bmid, f.read())
 
 if __name__ == '__main__':
     unittest.main()
