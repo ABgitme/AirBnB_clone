@@ -55,9 +55,9 @@ class HBNBCommand(cmd.Cmd):
         print(new_instance.id)
 
     def help_create(self):
-        print("Creates a new instance of a model and saves it to the database.")
+        print("Creates a new instance of a model\
+                and saves it to the database.")
         print("Usage: create <class name>")
-
 
     def do_show(self, arg):
         """Prints the string representation of an instance"""
@@ -116,7 +116,8 @@ class HBNBCommand(cmd.Cmd):
             print(HBNBCommand.ERROR_CLASS_NOT_EXIST)
 
     def do_update(self, arg):
-        """Updates an instance based on the class name and id by adding or updating attribute."""
+        """Updates an instance based on the class name
+        and id by adding or updating attribute."""
         args = self.Parser(arg)
         if not args:
             print(HBNBCommand.ERROR_CLASS_NAME_MIS)
@@ -147,8 +148,10 @@ class HBNBCommand(cmd.Cmd):
                 obj.save()
 
     def help_update(self):
-        print("Updates an instance based on the class name and id by adding or updating attribute.")
-        print("Usage: update <class name> <id> <attribute name> <attribute value>")
+        print("Updates an instance based on the class\
+                name and id by adding or updating attribute.")
+        print("Usage: update <class name> <id>\
+                <attribute name> <attribute value>")
 
     def Parser(self, arg):
         """tokenize and Counts the number of arguments passed to the console.
@@ -161,5 +164,7 @@ class HBNBCommand(cmd.Cmd):
         """
         commads = shlex.split(arg)
         return commads
+
+
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
