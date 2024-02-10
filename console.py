@@ -62,93 +62,84 @@ class HBNBCommand(cmd.Cmd):
 
         key = f"{args[0]}.{args[1]}"
         if key not in storage.all().keys():
-            print("** no instance found **")
+            print(HBNBCommand.ERROR_NO_ID_FOUND)
         else:
             print(storage.all()[key])
 
     def do_destroy(self, arg):
         """Deletes an instance based on the class name and id"""
-        if not arg:
-            print("** class name missing **")
+        args = self.Parser(arg)
+        if len(args) == 0:
+            print(HBNBCommand.ERROR_CLASS_NAME_MIS)
+            return
+        elif len(args) < 2:
+            print(HBNBCommand.ERROR_ID)
             return
 
-        args = arg.split()
-        if args[0] not in models.classes.keys():
-            print("** class doesn't exist **")
-            return
-
-        if len(args) == 1:
-            print("** instance id missing **")
-            return
-
-        key = args[0] + "." + args[1]
-        if key not in models.storage.all().keys():
-            print("** no instance found **")
+        key = f"{args[0]}.{args[1]}"
+        if key not in storage.all().keys():
+            print(HBNBCommand.ERROR_NO_ID_FOUND)
         else:
-            del models.storage.all()[key]
+            del storage.all()[key]
             models.storage.save()
 
     def do_all(self, arg):
         """Prints all string representations of instances"""
-        args = arg.split()
-        objects = models.storage.all()
-
-        if not arg:
-            print([str(obj) for obj in objects.values()])
-            return
-
-        class_name = args[0]
-
-        try:
-            # Check if the class exists in models.BaseModels.py
-            module = importlib.import_module("models.BaseModels")
-            getattr(module, class_name)  # Raise AttributeError if not found
-        except (ModuleNotFoundError, AttributeError):
-            print("** class doesn't exist **")
-            return
-
-        print([str(obj) for obj in objects.values() if obj.__class__.__name__ == args[0]])
+        args = self.Parser(arg)
+        if not args:
+            # If no arguments provided, print all instances of all classes
+            instances = []
+            for obj_id, obj in storage.all().items():
+                instances.append(str(obj))
+            print(instances)
+        elif args[0] in self.valid_classes:
+            # If a valid class name is provided, print instances of that class
+            instances = []
+            for obj_id, obj in storage.all().items():
+                class_name = obj.__class__.__name__
+                if class_name == args[0]:
+                    instances.append(str(obj))
+            print(instances)
+        else:
+            print(HBNBCommand.ERROR_CLASS_NOT_EXIST)
 
     def do_update(self, arg):
-        """Updates an instance based on the class name and id"""
-        args = arg.split()
-
-        if not arg:
-            print("** class name missing **")
+        """Updates an instance based on the class name and id by adding or updating attribute."""
+        args = self.Parser(arg)
+        if not args:
+            print(HBNBCommand.ERROR_CLASS_NAME_MIS)
             return
-
-        if args[0] not in models.classes.keys():
-            print("** class doesn't exist **")
-            return
-
-        if len(args) == 1:
-            print("** instance id missing **")
-            return
-
-        key = args[0] + "." + args[1]
-        if key not in models.storage.all().keys():
-            print("** no instance found **")
-            return
-
-        if len(args) == 2:
-            print("** attribute name missing **")
-            return
-
-        if len(args) == 3:
-            print("** value missing **")
-            return
-
-        setattr(models.storage.all()[key], args[2], args[3])
-        models.storage.save()
-
-    def validate_class_name(self, arg):
-        """Validates if the class_name argument is a valid class"""
-        args = arg.split(' ')
-        class_name = args[0]
-        if class_name not in HBNBCommand.valid_classes:
+        elif args[0] not in HBNBCommand.valid_classes:
             print(HBNBCommand.ERROR_CLASS_NOT_EXIST)
-            return False
-        return class_name
+            return
+        elif len(args) < 2:
+            print(HBNBCommand.ERROR_ID)
+            return
+        elif len(args) < 3:
+            print(HBNBCommand.ERROR_ATTR_MIS)
+            return
+        elif len(args) < 4:
+            print(HBNBCommand.ERROR_ATT_VALUE)
+            return
+        class_name = args[0]
+        instance_id = args[1]
+        key = f"{class_name}.{instance_id}"
+        if key not in storage.all().keys():
+            print(HBNBCommand.ERROR_NO_ID_FOUND)
+            return
+
+        attribute_name = args[2]
+        if attribute_name in ['id', 'created_at', 'updated_at']:
+            return
+
+        attribute_value_str = args[3]
+        if len(attribute_value_str) < 1:
+            print(HBNBCommand.ERROR_ATT_VALUE)
+            return
+
+        obj = storage.all()[key]
+        setattr(obj, attribute_name, attribute_value_str)
+        obj.save()
 
     def Parser(self, arg):
         """tokenize and Counts the number of arguments passed to the console.
