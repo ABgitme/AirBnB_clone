@@ -23,6 +23,9 @@ class HBNBCommand(cmd.Cmd):
         """Quit command to exit the program"""
         return True
 
+    def help_quit(self):
+        print("Quit the program.")
+
     def do_EOF(self, arg):
         """EOF command to exit the program"""
         print()  # Print a newline before exiting
@@ -31,6 +34,9 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """Do nothing on empty input"""
         pass
+
+    def help_emptyline(self):
+        print("Does nothing on empty input.")
 
     def do_create(self, arg):
         """Creates a new instance of BaseModel, saves it, and prints the id"""
@@ -47,6 +53,11 @@ class HBNBCommand(cmd.Cmd):
         new_instance = HBNBCommand.valid_classes[class_name]()
         new_instance.save()
         print(new_instance.id)
+
+    def help_create(self):
+        print("Creates a new instance of a model and saves it to the database.")
+        print("Usage: create <class name>")
+
 
     def do_show(self, arg):
         """Prints the string representation of an instance"""
@@ -135,6 +146,9 @@ class HBNBCommand(cmd.Cmd):
                 setattr(obj, attribute_name, attribute_value_str)
                 obj.save()
 
+    def help_update(self):
+        print("Updates an instance based on the class name and id by adding or updating attribute.")
+        print("Usage: update <class name> <id> <attribute name> <attribute value>")
 
     def Parser(self, arg):
         """tokenize and Counts the number of arguments passed to the console.
