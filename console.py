@@ -1,4 +1,16 @@
 #!/usr/bin/python3
+"""HBNB Command Line Interface
+
+This module provides a command-line interface (CLI) for
+managing instances of various classes in the HBNB application.
+It allows users to create, show, update,
+and delete instances of specified classes.
+
+Classes:
+    HBNBCommand: A command-line interpreter that
+    accepts user input and executes corresponding commands.
+
+"""
 import cmd
 import models
 import importlib
@@ -9,6 +21,24 @@ from models.user import User
 
 
 class HBNBCommand(cmd.Cmd):
+    """HBNB Command Line Interface
+
+    A command-line interpreter that accepts
+    user input and executes corresponding commands.
+    The commands include creating, showing, updating,
+    and deleting instances of specified classes.
+
+    Attributes:
+        valid_classes (dict): A dictionary containing valid class
+            names as keys and corresponding class references.
+        ERROR_ATT_VALUE (str): Error message for missing attribute value.
+        ERROR_NO_ID_FOUND (str): Error message for no instance found.
+        ERROR_CLASS_NOT_EXIST (str): Error message for non-existent class.
+        ERROR_ID (str): Error message for missing instance id.
+        ERROR_CLASS_NAME_MIS (str): Error message for missing class name.
+        ERROR_ATTR_MIS (str): Error message for missing attribute name.
+        prompt (str): Prompt string for the command line interface.
+    """
     valid_classes = {'BaseModel': BaseModel, 'User': User}
     ERROR_ATT_VALUE = "** value missing **"
     ERROR_NO_ID_FOUND = "** no instance found **"
