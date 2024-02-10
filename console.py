@@ -115,31 +115,25 @@ class HBNBCommand(cmd.Cmd):
         elif len(args) < 2:
             print(HBNBCommand.ERROR_ID)
             return
-        elif len(args) < 3:
-            print(HBNBCommand.ERROR_ATTR_MIS)
-            return
-        elif len(args) < 4:
-            print(HBNBCommand.ERROR_ATT_VALUE)
-            return
-        class_name = args[0]
-        instance_id = args[1]
-        key = f"{class_name}.{instance_id}"
-        if key not in storage.all().keys():
-            print(HBNBCommand.ERROR_NO_ID_FOUND)
-            return
+        else:
+            class_name = args[0]
+            instance_id = args[1]
+            key = f"{class_name}.{instance_id}"
+            if key not in storage.all().keys():
+                print(HBNBCommand.ERROR_NO_ID_FOUND)
+            elif len(args) < 3:
+                print(HBNBCommand.ERROR_ATTR_MIS)
+            elif len(args) < 4 or len(args[3]) < 1:
+                print(HBNBCommand.ERROR_ATT_VALUE)
+            else:
+                attribute_name = args[2]
+                if attribute_name in ['id', 'created_at', 'updated_at']:
+                    return
+                attribute_value_str = args[3]
+                obj = storage.all()[key]
+                setattr(obj, attribute_name, attribute_value_str)
+                obj.save()
 
-        attribute_name = args[2]
-        if attribute_name in ['id', 'created_at', 'updated_at']:
-            return
-
-        attribute_value_str = args[3]
-        if len(attribute_value_str) < 1:
-            print(HBNBCommand.ERROR_ATT_VALUE)
-            return
-
-        obj = storage.all()[key]
-        setattr(obj, attribute_name, attribute_value_str)
-        obj.save()
 
     def Parser(self, arg):
         """tokenize and Counts the number of arguments passed to the console.
