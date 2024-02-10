@@ -12,6 +12,7 @@ such as email, password, first name, and last name.
 """
 from models.base_model import BaseModel
 
+
 class User(BaseModel):
     """
     The User class represents a user within the system.
