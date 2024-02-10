@@ -5,10 +5,11 @@ import importlib
 import shlex
 from models import storage
 from models.base_model import BaseModel
+from models.user import User
 
 
 class HBNBCommand(cmd.Cmd):
-    valid_classes = {'BaseModel': BaseModel}
+    valid_classes = {'BaseModel': BaseModel, 'User': User}
     ERROR_ATT_VALUE = "** value missing **"
     ERROR_NO_ID_FOUND = "** no instance found **"
     ERROR_CLASS_NOT_EXIST = "** class doesn't exist **"

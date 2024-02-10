@@ -7,6 +7,10 @@ import models
 class BaseModel:
     def __init__(self, *args, **kwargs):
         """Initializes a new BaseModel instance."""
+        self.id = str(uuid.uuid4())  # Generate a unique UUID for the ID
+        self.created_at = datetime.now()  # Set the creation timestamp
+        self.updated_at = datetime.now()  # Set the initial
+
         if kwargs:
             # Handle initialization from a dictionary
             for key, value in kwargs.items():
@@ -14,12 +18,7 @@ class BaseModel:
                     if key in ["created_at", "updated_at"]:
                         value = datetime.fromisoformat(value)  # Convert string to datetime
                     setattr(self, key, value)
-        else:
-            # Handle creation of a new instance
-            self.id = str(uuid.uuid4())  # Generate a unique UUID for the ID
-            self.created_at = datetime.now()  # Set the creation timestamp
-            self.updated_at = datetime.now()  # Set the initial update timestamp
-            models.storage.new(self)
+        models.storage.new(self)
 
     def save(self):
         self.updated_at = datetime.now()
