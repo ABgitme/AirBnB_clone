@@ -18,7 +18,11 @@ import shlex
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
-
+from models.amenity import Amenity
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
 
 class HBNBCommand(cmd.Cmd):
     """HBNB Command Line Interface
@@ -39,7 +43,9 @@ class HBNBCommand(cmd.Cmd):
         ERROR_ATTR_MIS (str): Error message for missing attribute name.
         prompt (str): Prompt string for the command line interface.
     """
-    valid_classes = {'BaseModel': BaseModel, 'User': User}
+    valid_classes = {'BaseModel': BaseModel, 'User': User, 'Amenity': Amenity,
+                        'City': City, 'State': State, 'Place': Place,
+                        'Review': Review}
     ERROR_ATT_VALUE = "** value missing **"
     ERROR_NO_ID_FOUND = "** no instance found **"
     ERROR_CLASS_NOT_EXIST = "** class doesn't exist **"
@@ -72,10 +78,10 @@ class HBNBCommand(cmd.Cmd):
         """Creates a new instance of BaseModel, saves it, and prints the id"""
 
         args = self.Parser(arg)
-        if not args[0]:
+        if len(args) == 0:
             print(HBNBCommand.ERROR_CLASS_NAME_MIS)
             return
-        class_name = arg.split()[0]
+        class_name = args[0]
         if class_name not in HBNBCommand.valid_classes:
             print(HBNBCommand.ERROR_CLASS_NOT_EXIST)
             return
