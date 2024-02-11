@@ -1,5 +1,10 @@
 #!/usr/bin/python3
+"""
+Module defining the Review class,
+representing reviews associated with places.
+"""
 from models.base_model import BaseModel
+
 
 class Review(BaseModel):
     """Represents a Review.

@@ -1,5 +1,9 @@
 #!/usr/bin/python3
+"""
+Module defining the Place class for representing places in a system.
+"""
 from models.base_model import BaseModel
+
 
 class Place(BaseModel):
     """Represents a Place.
@@ -15,7 +19,8 @@ class Place(BaseModel):
     - price_by_night: integer (0 by default)
     - latitude: float (0.0 by default)
     - longitude: float (0.0 by default)
-    - amenity_ids: list of strings (empty list by default, corresponds to Amenity.id)
+    - amenity_ids: list of strings (empty list by default,
+    corresponds to Amenity.id)
     """
     city_id = ""
     user_id = ""

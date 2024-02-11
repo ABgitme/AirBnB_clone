@@ -1,5 +1,10 @@
 #!/usr/bin/python3
+"""
+Module containing the State class for
+representing states within a system.
+"""
 from models.base_model import BaseModel
+
 
 class State(BaseModel):
     """Represents a State.

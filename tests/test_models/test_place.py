@@ -1,10 +1,21 @@
 #!/usr/bin/python3
+"""
+This module contains unit tests
+for the Place class in the models module.
+"""
 import unittest
 from models.place import Place
 
-class TestPlace(unittest.TestCase):
 
+class TestPlace(unittest.TestCase):
+    """
+    This class provides unit tests for the Place class.
+    """
     def test_place_attributes_default_values(self):
+        """
+        Tests if the attributes of a Place instance
+        have their default values.
+        """
         place = Place()
         self.assertEqual(place.city_id, "")
         self.assertEqual(place.user_id, "")
@@ -19,8 +30,12 @@ class TestPlace(unittest.TestCase):
         self.assertEqual(place.amenity_ids, [])
 
     def test_place_instance(self):
+        """
+        Tests if an instance of Place is created successfully.
+        """
         place = Place()
         self.assertIsInstance(place, Place)
+
 
 if __name__ == '__main__':
     unittest.main()
