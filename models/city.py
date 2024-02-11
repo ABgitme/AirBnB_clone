@@ -9,7 +9,5 @@ class City(BaseModel):
     - name: string (empty string by default)
     """
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.state_id = ""
-        self.name = ""
+    state_id = ""
+    name = ""
