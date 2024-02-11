@@ -216,7 +216,8 @@ class HBNBCommand(cmd.Cmd):
             'update': self.do_update,
             'destroy': self.do_destroy,
             'show': self.do_show,
-            'all': self.do_all
+            'all': self.do_all,
+            'count': self.do_count
         }
 
         method = method_dict.get(method_name)
@@ -225,6 +226,20 @@ class HBNBCommand(cmd.Cmd):
 
         print(HBNBCommand.ERROR_SYNTAX)
         return False
+
+    def do_count(self, arg):
+        """counts the number of objects"""
+        command = shlex.split(arg)
+        if command[0] in self.valid_classes:
+            count = 0
+            for obj_key, obj in storage.all().items():
+                class_name = obj_key.split('.')[0]
+                if class_name == command[0]:
+                    count += 1
+            print(count)
+        else:
+            print(HBNBCommand.ERROR_SYNTAX)
+            return False
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
