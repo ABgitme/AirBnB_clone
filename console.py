@@ -52,6 +52,7 @@ class HBNBCommand(cmd.Cmd):
     ERROR_ID = "** instance id missing **"
     ERROR_CLASS_NAME_MIS = '** class name missing **'
     ERROR_ATTR_MIS = "** attribute name missing **"
+    ERROR_SYNTAX = "** syntax error **"
 
     prompt = '(hbnb) '
 
@@ -201,6 +202,29 @@ class HBNBCommand(cmd.Cmd):
         commads = shlex.split(arg)
         return commads
 
+    def default(self, arg):
+        """ handle the default behaviour of the command module"""
+        args = arg.split('.')
+        if len(args) != 2:
+            print(HBNBCommand.ERROR_SYNTAX)
+            return False
+
+        class_name, method_str = args
+        method_name, _ = method_str.split('(')
+
+        method_dict = {
+            'update': self.do_update,
+            'destroy': self.do_destroy,
+            'show': self.do_show,
+            'all': self.do_all
+        }
+
+        method = method_dict.get(method_name)
+        if method:
+            return method(f"{class_name} {''}")
+
+        print(HBNBCommand.ERROR_SYNTAX)
+        return False
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
