@@ -45,8 +45,8 @@ class HBNBCommand(cmd.Cmd):
         prompt (str): Prompt string for the command line interface.
     """
     valid_classes = {'BaseModel': BaseModel, 'User': User, 'Amenity': Amenity,
-                    'City': City, 'State': State, 'Place': Place,
-                    'Review': Review}
+                        'City': City, 'State': State, 'Place': Place,
+                        'Review': Review}
     ERROR_ATT_VALUE = "** value missing **"
     ERROR_NO_ID_FOUND = "** no instance found **"
     ERROR_CLASS_NOT_EXIST = "** class doesn't exist **"
@@ -217,6 +217,7 @@ class HBNBCommand(cmd.Cmd):
             if len(method_name) > 1:
                 method_args = method_name[1].strip(')').split(',')
                 method_args = [argval.strip().strip('"') for argval in method_args]
+
         method_dict = {
             'update': self.do_update,
             'destroy': self.do_destroy,
