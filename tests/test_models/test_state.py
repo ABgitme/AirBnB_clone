@@ -1,5 +1,8 @@
 #!/usr/bin/python3
-
+"""
+This module contains unit tests
+for the State class in the models module.
+"""
 import unittest
 from models.state import State
 
