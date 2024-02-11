@@ -214,10 +214,10 @@ class HBNBCommand(cmd.Cmd):
         class_name, method_str = args
         method_name = method_str.split('(')
         if method_name[0] in ['show', 'destroy', 'update']:
-            method_args = method_name[1].strip(')').split(',')
             if len(method_name) > 1:
+                method_args = method_name[1].strip(')').split(',')
                 method_args = [argval.strip().strip('"')
-                                for argval in method_args]
+                            for argval in method_args]
         method_dict = {
             'update': self.do_update,
             'destroy': self.do_destroy,
