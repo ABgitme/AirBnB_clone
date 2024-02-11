@@ -212,9 +212,10 @@ class HBNBCommand(cmd.Cmd):
 
         class_name, method_str = args
         method_name = method_str.split('(')
-        if method_name[0] in ['show', 'destroy']:
+        if method_name[0] in ['show', 'destroy', 'update']:
             if len(method_name) > 1:
                 method_args = method_name[1].strip(')').split(',')
+                method_args = [argval.strip().strip('"') for argval in method_args]
         method_dict = {
             'update': self.do_update,
             'destroy': self.do_destroy,
@@ -224,10 +225,11 @@ class HBNBCommand(cmd.Cmd):
         }
 
         method = method_dict.get(method_name[0])
-        if method and method_args == []:
-            return method(f"{class_name} {''}")
-        elif method_args:
-            return method(f"{class_name} {method_args[0]}")
+        if method:
+            if method_args:
+                return method(f"{class_name} {' '.join(method_args)}")
+            else:
+                return method(f"{class_name} {''}")
 
         print(HBNBCommand.ERROR_SYNTAX)
         return False
